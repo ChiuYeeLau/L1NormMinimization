@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+\usepackage{afterpage}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{subfigure}
+\usepackage{natbib,url}
+\usepackage{float}
+\usepackage{amssymb}
+
+\newcommand*{\QEDA}{\hfill\ensuremath{\blacksquare}}%
+\newcommand*{\QEDB}{\hfill\ensuremath{\square}}%
+
+% \usepackage[urw-garamond]{mathdesign}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{mathptmx}
+
+\floatstyle{plain}
+\restylefloat{figure}
+
+\input defs.tex
+\def\Epsilon{\mathcal{E}}
+
+\begin{document}
+
+\title{L1-Norm Minimization}
+\author{Xiaoyi Liu\\ Email:xiaoyil3@uci.edu}
+\date{}
+\maketitle
+
+\noindent {\bf Theorem 1:} Given two vectors ${\pmb x}, {\pmb y} \in R^n$, the optimal scalar $\beta$ that minimizes $\left|\left|\beta {\pmb x} - {\pmb y}\right|\right|_1$ is 
+\begin{align}
+\beta^{\star} = \frac{y_{{j}_{t^{\star}}}}{x_{{j}_{t^{\star}}}}, \nonumber
+\end{align}
+where:
+ \begin{enumerate}
+   \item $x_i$ or $y_i$ is the $i$-th element of ${\pmb x}$ or ${\pmb y}$, respectively;
+   \item $\left\{{j}_1, \ldots, {j}_m\right\}$ is a permutation of the indices of non-zero elements in ${\pmb x}$ ($\{i_1, \ldots, i_m\}$, where $m \leq n$) satisfying $\frac{y_{{j}_1}}{x_{{j}_1}} \leq \ldots \leq \frac{y_{{j}_m}}{x_{{j}_m}}$;
+   \item $t^{\star}$ satisfies $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| < 0$ for $t < t^{\star}$ and $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| \geq 0$ for $t^{\star} \leq t \leq m$.
+ \end{enumerate}
+
+\noindent
+\textit{Proof:}
+$f(\beta) = \left|\left|\beta {\pmb x} - {\pmb y}\right|\right|_1$ is equivalent to
+\begin{align}
+\label{EQ:1}
+f(\beta) 
+& = \sum_{i = 1}^n \left|\beta x_i - y_i\right| 
+= \sum_{k = 1}^m \left|\beta x_{i_k} - y_{i_k}\right| \nonumber\\
+& = \sum_{k = 1}^m \left|x_{i_k}\right|\times\left|\beta  - \frac{y_{i_k}}{x_{i_k}}\right|
+ = \sum_{k = 1}^m \left|x_{{j}_k}\right|\times\left|\beta  - \frac{y_{{j}_k}}{x_{{j}_k}}\right|.
+\end{align}
+
+First, we show the optimal value of $\beta$ is one of $\frac{y_{{j}_1}}{x_{{j}_1}}, \ldots, \frac{y_{{j}_m}}{x_{{j}_m}}$.
+
+When $\beta \leq \frac{y_{{j}_1}}{x_{{j}_1}}$, $f(\beta) $ in \eqref{EQ:1} is equal to
+\begin{align}
+\label{EQ:2}
+f(\beta) 
+& = \sum_{k = 1}^m \left|x_{{j}_k}\right|\times\left(\frac{y_{{j}_k}}{x_{{j}_k}} - \beta\right) = \sum_{k = 1}^m \left|x_{{j}_k}\right|\times\frac{y_{{j}_k}}{x_{{j}_k}} - \left(\sum_{k = 1}^m \left|x_{{j}_k}\right|\right) \times \beta.
+\end{align}
+The minimum of \eqref{EQ:2} is attained when $\beta = \frac{y_{{j}_1}}{x_{{j}_1}}$. 
+
+
+Similarly, when $\beta \geq \frac{y_{{j}_m}}{x_{{j}_m}}$, we obtain
+\begin{align}
+\label{EQ:3}
+f(\beta) 
+& = \sum_{k = 1}^m \left|x_{{j}_k}\right|\times\left(\beta - \frac{y_{{j}_k}}{x_{{j}_k}}\right) = \left(\sum_{k = 1}^m \left|x_{{j}_k}\right|\right) \times \beta - \sum_{k = 1}^m \left|x_{{j}_k}\right|\times\frac{y_{{j}_k}}{x_{{j}_k}}.
+\end{align}
+The minimum of \eqref{EQ:3} is achieved when $\beta = \frac{y_{{j}_m}}{x_{{j}_m}}$. 
+
+When $\frac{y_{{j}_t}}{x_{{j}_t}} \leq \beta \leq \frac{y_{{j}_{t + 1}}}{x_{{j}_{t + 1}}} $ for $1 \leq t \leq m - 1$, we have
+\begin{align}
+\label{EQ:4}
+f(\beta) 
+& = \sum_{k = 1}^t \left|x_{{j}_k}\right|\times\left(\beta - \frac{y_{{j}_k}}{x_{{j}_k}}\right) 
+ + \sum_{k = t + 1}^m \left|x_{{j}_k}\right|\times\left(\frac{y_{{j}_k}}{x_{{j}_k}} - \beta\right)
+ \nonumber\\
+& = \left(\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right|\right) \times \beta + \sum_{k = t + 1}^m \left|x_{{j}_k}\right|\times\frac{y_{{j}_k}}{x_{{j}_k}} - \sum_{k = 1}^t \left|x_{{j}_k}\right|\times\frac{y_{{j}_k}}{x_{{j}_k}}.
+\end{align}
+The minimum of \eqref{EQ:4} is obtained when $\beta = \frac{y_{{j}_t}}{x_{{j}_t}}$ if $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| \geq 0$ and $\beta = \frac{y_{{j}_{t + 1}}}{x_{{j}_{t + 1}}}$ if $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| < 0$. Therefore, we have shown the optimal $\beta$ should be one of $\frac{y_{{j}_1}}{x_{{j}_1}}, \ldots, \frac{y_{{j}_m}}{x_{{j}_m}}$.
+
+Second, we show the optimal $\beta$ is $\beta^{\star} = \frac{y_{{j}_{t^{\star}}}}{x_{{j}_{t^{\star}}}}$ such that $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| < 0$ for $t < t^{\star}$ and $\sum_{k = 1}^t \left|x_{{j}_k}\right| - \sum_{k = t + 1}^m \left|x_{{j}_k}\right| \geq 0$ for $t^{\star} \leq t \leq m$. By subtracting $f\left(\frac{y_{{j}_{t}}}{x_{{j}_{t}}}\right)$ from $f\left(\frac{y_{{j}_{t + 1}}}{x_{{j}_{t + 1}}}\right)$, we get
+\begin{align}
+f\left(\frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}}\right) - f\left(\frac{y_{ {j}_{t}}}{x_{ {j}_{t}}}\right)
+& = \sum_{k = 1}^{t} \left|x_{ {j}_k}\right|\times\left(\frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}} - \frac{y_{ {j}_k}}{x_{ {j}_k}}\right)
+ + \sum_{k = t + 2}^m \left|x_{ {j}_k}\right|\times\left(\frac{y_{ {j}_k}}{x_{ {j}_k}} - \frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}}\right) \nonumber\\
+ & - \sum_{k = 1}^{t - 1} \left|x_{ {j}_k}\right|\times\left(\frac{y_{ {j}_{t}}}{x_{ {j}_{t}}} - \frac{y_{ {j}_k}}{x_{ {j}_k}}\right)
+ - \sum_{k = t + 1}^m \left|x_{ {j}_k}\right|\times\left(\frac{y_{ {j}_k}}{x_{ {j}_k}} - \frac{y_{ {j}_{t}}}{x_{ {j}_{t}}}\right) \nonumber\\
+ & = \left(\sum_{k = 1}^{t} \left|x_{ {j}_k}\right| - \sum_{k = t + 1}^{m} \left|x_{ {j}_k}\right|\right)\times\left(\frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}} - \frac{y_{ {j}_t}}{x_{ {j}_t}}\right).\nonumber
+\end{align}
+Note that $\frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}} - \frac{y_{ {j}_t}}{x_{ {j}_t}} \geq 0$. For any $t < t^{\star}$, $\sum_{k = 1}^t \left|x_{ {j}_k}\right| - \sum_{k = t + 1}^m \left|x_{ {j}_k}\right| < 0$, thus, $f\left(\frac{y_{ {j}_{t}}}{x_{ {j}_{t}}}\right) \geq f\left(\frac{y_{ {j}_{t + 1}}}{x_{ {j}_{t + 1}}}\right) \geq \cdots \geq f(\beta^{\star})$. For any $t > t^{\star}$, $\sum_{k = 1}^t \left|x_{ {j}_k}\right| - \sum_{k = t + 1}^m \left|x_{ {j}_k}\right| \geq 0$, thus, $f\left(\frac{y_{ {j}_{t}}}{x_{ {j}_{t}}}\right) \geq f\left(\frac{y_{ {j}_{t - 1}}}{x_{ {j}_{t - 1}}}\right) \geq \cdots \geq f(\beta^{\star})$. Furthermore, since $\sum_{k = 1}^{t} \left|x_{ {j}_k}\right| - \sum_{k = t + 1}^{m} \left|x_{ {j}_k}\right|$ is strictly increasing on $t$, there exists only one such $t^{\star}$. The proof is complete.
+\hfill \QEDA
+
+
+%\bibliographystyle{abbrvnat.bst}
+%\bibliography{all_biblographies}
+
+\end{document}
